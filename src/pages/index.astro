@@ -1,0 +1,876 @@
+---
+const brand = "MR Autoglas";
+const phoneDisplay = "0174 30 55 710";
+const phoneTel = "tel:+491743055710";
+
+const waLink = "https://wa.me/491743055710";
+
+// ✅ Termin buchen per WhatsApp (fertiger Text)
+const waText = encodeURIComponent(
+  "Hallo MR Autoglas, ich möchte einen Termin anfragen.\n\nFahrzeug: \nScheibe (Front/Seite/Heck): \nWunschdatum/Uhrzeit: \nOrt: Ingolstadt\n\nDanke!"
+);
+const waBookLink = `${waLink}?text=${waText}`;
+
+// ✅ Standort (Adresse + Google Maps)
+const addressLine1 = "Goethestraße 18";
+const addressLine2 = "85055 Ingolstadt";
+const mapsQuery = encodeURIComponent(`${addressLine1}, ${addressLine2}`);
+const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+const mapsEmbed = `https://www.google.com/maps?q=${mapsQuery}&output=embed`;
+
+const year = new Date().getFullYear();
+
+// ✅ Logo liegt in /public/logo.png -> URL ist /logo.png
+const logoSrc = "/logo.png";
+---
+
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#f6f7fb" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Kein Weiß-Blitz -->
+    <style>
+      html,
+      body {
+        background: #f6f7fb;
+      }
+      body {
+        opacity: 0;
+      }
+    </style>
+
+    <title>{brand} – Autoscheiben Ingolstadt</title>
+    <meta
+      name="description"
+      content="Professioneller Scheibenaustausch & Scheibenhandel in Ingolstadt. Schnell, sauber, zuverlässig. Jetzt Termin anfragen."
+    />
+
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --line: #e5e7eb;
+        --accent: #e11d48; /* rot */
+        --dark: #0f172a; /* dunkel */
+        --shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
+        --shadow2: 0 10px 24px rgba(15, 23, 42, 0.08);
+        --radius: 18px;
+        --radius2: 14px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          "Noto Sans", "Helvetica Neue", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 18px 16px 90px;
+      }
+
+      /* TOPBAR */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(246, 247, 251, 0.92);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav {
+        max-width: 1120px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 16px;
+      }
+
+      /* BRAND */
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+      }
+      .brandLogo {
+        height: 150px;
+        width: auto;
+        display: block;
+      }
+
+      .navlinks {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 14px;
+      }
+      .navlinks a {
+        padding: 8px 10px;
+        border-radius: 999px;
+      }
+      .navlinks a:hover {
+        background: #fff;
+        color: var(--text);
+        box-shadow: var(--shadow2);
+      }
+      .navRight {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .phoneMini {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text);
+        font-weight: 900;
+        font-size: 14px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 999px;
+        box-shadow: var(--shadow2);
+        white-space: nowrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 11px 14px;
+        border-radius: 999px;
+        font-weight: 950;
+        font-size: 14px;
+        border: 1px solid var(--line);
+        background: #fff;
+        box-shadow: var(--shadow2);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        filter: brightness(0.98);
+      }
+      .btn.primary {
+        border: none;
+        background: var(--accent);
+        color: #fff;
+      }
+      .btn.dark {
+        border: none;
+        background: var(--dark);
+        color: #fff;
+      }
+
+      /* HERO */
+      .hero {
+        margin-top: 18px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+      .heroInner {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 0;
+        min-height: 520px;
+      }
+      .heroLeft {
+        padding: 46px 38px 34px;
+        position: relative;
+        z-index: 2;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(225, 29, 72, 0.08);
+        color: var(--accent);
+        font-weight: 950;
+        font-size: 12px;
+        letter-spacing: 0.2px;
+      }
+      .h1 {
+        margin: 16px 0 10px;
+        font-size: clamp(34px, 4.6vw, 60px);
+        line-height: 1.05;
+        letter-spacing: -1px;
+        font-weight: 950;
+      }
+      .h1 .accent {
+        color: var(--accent);
+      }
+      .lead {
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.6;
+        max-width: 60ch;
+        font-weight: 650;
+      }
+      .heroBtns {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+
+      /* ✅ KPI LEISTE (1000+ etc.) – PREMIUM DARK + ICON + ACCENT LINE */
+      .kpis{
+        margin-top:16px;
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap:14px;
+        max-width: 560px;
+      }
+      .kpi{
+        position: relative;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius:16px;
+        padding:16px 18px;
+        box-shadow: 0 14px 28px rgba(15,23,42,0.25);
+        overflow:hidden;
+        transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      }
+      /* rote Akzentlinie oben */
+      .kpi::before{
+        content:"";
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        height:3px;
+        background: linear-gradient(90deg, rgba(225,29,72,1), rgba(225,29,72,0.35));
+      }
+      /* leichter Glanz */
+      .kpi::after{
+        content:"";
+        position:absolute;
+        inset:-40% -30%;
+        background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.12), transparent 55%);
+        transform: rotate(8deg);
+        pointer-events:none;
+      }
+      .kpi:hover{
+        transform: translateY(-3px);
+        box-shadow: 0 20px 36px rgba(15,23,42,0.35);
+        filter: brightness(1.02);
+      }
+
+      .kpiTop{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        position: relative;
+        z-index: 1;
+      }
+      .kpiIcon{
+        width:34px;
+        height:34px;
+        border-radius:12px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background: rgba(225,29,72,0.14);
+        border: 1px solid rgba(225,29,72,0.25);
+        font-size:16px;
+        line-height:1;
+      }
+      .kpi b{
+        display:block;
+        font-size:18px;
+        font-weight:950;
+        color:#ffffff;
+        letter-spacing:0.5px;
+      }
+      .kpi span{
+        display:block;
+        margin-top:6px;
+        font-size:12px;
+        color:rgba(255,255,255,0.72);
+        font-weight:750;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Scheibenhandel Box */
+      .tradeBox {
+        margin-top: 22px;
+        padding: 16px;
+        background: linear-gradient(180deg, #ffffff, #fafafa);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: var(--shadow2);
+      }
+      .tradeBox h3 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 950;
+      }
+      .tradeGrid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .tradeGrid strong {
+        display: block;
+        font-weight: 950;
+        font-size: 13px;
+        margin-bottom: 3px;
+      }
+      .tradeGrid p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+        font-weight: 650;
+      }
+
+      /* HERO IMAGE SIDE */
+      .heroRight {
+        position: relative;
+        min-height: 520px;
+        background: #fff;
+      }
+      .heroBg {
+        position: absolute;
+        inset: 0;
+        background-image: url("/hero-car.jpg");
+        background-size: cover;
+        background-position: 60% 35%;
+        background-repeat: no-repeat;
+      }
+
+      /* Vorteile */
+      .section {
+        margin-top: 28px;
+      }
+      .sectionTitle {
+        text-align: center;
+        padding: 12px 0 6px;
+      }
+      .sectionTitle h2 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 950;
+      }
+      .sectionTitle p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-weight: 800;
+        font-size: 13px;
+      }
+      .cards {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 16px;
+        box-shadow: var(--shadow2);
+        min-height: 150px;
+      }
+      .cardIcon {
+        width: 34px;
+        height: 34px;
+        border-radius: 12px;
+        background: rgba(225, 29, 72, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 950;
+        color: var(--accent);
+        margin-bottom: 10px;
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        font-weight: 950;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+        font-weight: 650;
+      }
+
+      /* CTA + Formular */
+      .ctaBlock {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+        align-items: stretch;
+      }
+      .ctaLeft {
+        border-radius: 22px;
+        background: linear-gradient(135deg, #0b1224, #111827);
+        color: #fff;
+        padding: 26px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+      .ctaLeft h3 {
+        margin: 0 0 10px;
+        font-size: 26px;
+        font-weight: 950;
+        letter-spacing: -0.5px;
+      }
+      .ctaLeft p {
+        margin: 0 0 14px;
+        color: rgba(255, 255, 255, 0.78);
+        line-height: 1.6;
+        font-weight: 650;
+        font-size: 14px;
+        max-width: 56ch;
+      }
+      .checklist {
+        margin: 14px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+      .checklist li {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        color: rgba(255, 255, 255, 0.86);
+        font-weight: 800;
+        font-size: 13px;
+      }
+      .check {
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: rgba(225, 29, 72, 0.95);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+
+      .formCard {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+      .formCard h4 {
+        margin: 6px 0 12px;
+        font-size: 16px;
+        font-weight: 950;
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 11px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: #fff;
+        font: inherit;
+        font-size: 13px;
+        outline: none;
+      }
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+      input:focus,
+      textarea:focus {
+        border-color: rgba(225, 29, 72, 0.55);
+        box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1);
+      }
+      .formActions {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .smallNote {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.5;
+      }
+
+      /* Standort Map */
+      .mapWrap {
+        margin-top: 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: var(--shadow2);
+        background: #fff;
+      }
+      .mapFrame {
+        width: 100%;
+        height: 340px;
+        border: 0;
+        display: block;
+      }
+      .addrLine {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+        margin-top: 6px;
+      }
+
+      /* Footer */
+      footer {
+        margin-top: 26px;
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      /* Floating Buttons */
+      .floatWrap {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 9999;
+      }
+      .floatBtn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-radius: 999px;
+        font-weight: 950;
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.18);
+        background: #fff;
+      }
+      .floatCall {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+      }
+      .floatWa {
+        background: #25d366;
+        color: #fff;
+        border: none;
+      }
+      .floatBtn:hover {
+        filter: brightness(0.98);
+      }
+
+      /* Responsive */
+      @media (max-width: 980px) {
+        .heroInner {
+          grid-template-columns: 1fr;
+        }
+        .heroRight {
+          min-height: 320px;
+        }
+        .cards {
+          grid-template-columns: 1fr 1fr;
+        }
+        .ctaBlock {
+          grid-template-columns: 1fr;
+        }
+        .navlinks {
+          display: none;
+        }
+      }
+      @media (max-width: 520px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+        .heroLeft {
+          padding: 34px 18px 24px;
+        }
+        .brandLogo {
+          height: 28px;
+        }
+        /* ✅ KPI mobil */
+        .kpis{ grid-template-columns:1fr; max-width:100%; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="topbar">
+      <div class="nav">
+        <a class="brand" href="#home" aria-label="Zur Startseite">
+          <img class="brandLogo" src={logoSrc} alt="MR Autoglas Ingolstadt Logo" />
+          <span>{brand} Ingolstadt</span>
+        </a>
+
+        <nav class="navlinks">
+          <a href="#home">Home</a>
+          <a href="#leistungen">Leistungen</a>
+          <a href="#standort">Standort</a>
+          <a href="#kontakt">Kontakt</a>
+        </nav>
+
+        <div class="navRight">
+          <a class="phoneMini" href={phoneTel}>📞 {phoneDisplay}</a>
+          <a class="btn primary" href={waBookLink} target="_blank" rel="noopener">Termin buchen</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <!-- HERO -->
+      <section class="hero" id="home">
+        <div class="heroInner">
+          <div class="heroLeft">
+            <span class="pill">● Spezialisiert auf PKW • Bus • LKW</span>
+
+            <h1 class="h1">
+              Professioneller <span class="accent">Scheibenaustausch</span><br />
+              & Handel
+            </h1>
+
+            <p class="lead">
+              Schnell, sicher, zuverlässig. Austausch von Front-, Seiten- und Heckscheiben sowie
+              <strong>Scheibenhandel</strong> mit Einzelscheiben auf Bestellung – inklusive
+              <strong>Kleber & Zubehör</strong>.
+            </p>
+
+            <div class="heroBtns">
+              <a class="btn primary" href={waBookLink} target="_blank" rel="noopener">Termin buchen</a>
+              <a class="btn dark" href={waBookLink} target="_blank" rel="noopener">Schaden melden</a>
+              <a class="btn" href={phoneTel}>📞 Jetzt anrufen</a>
+              <a class="btn" href={waLink} target="_blank" rel="noopener">💬 WhatsApp</a>
+            </div>
+
+            <!-- ✅ KPI-LEISTE – mit Icon + roter Linie -->
+            <div class="kpis">
+              <div class="kpi">
+                <div class="kpiTop">
+                  <div class="kpiIcon">🛠️</div>
+                  <b>1000+</b>
+                </div>
+                <span>Scheiben getauscht</span>
+              </div>
+              <div class="kpi">
+                <div class="kpiTop">
+                  <div class="kpiIcon">⏱️</div>
+                  <b>20 Jahre</b>
+                </div>
+                <span>Erfahrung</span>
+              </div>
+              <div class="kpi">
+                <div class="kpiTop">
+                  <div class="kpiIcon">🚗</div>
+                  <b>Alle Marken</b>
+                </div>
+                <span>PKW • Bus • LKW</span>
+              </div>
+            </div>
+
+            <div class="tradeBox">
+              <h3>📦 Scheibenhandel</h3>
+              <div class="tradeGrid">
+                <div>
+                  <strong>Einzelscheiben</strong>
+                  <p>Passend für PKW, Busse & LKW – nach Fahrzeugdaten bestellt.</p>
+                </div>
+                <div>
+                  <strong>Kleber & Zubehör</strong>
+                  <p>Primer, Klebesets und alles was zur professionellen Montage nötig ist.</p>
+                </div>
+                <div>
+                  <strong>Für Werkstätten & Privat</strong>
+                  <p>Abholung oder Einbau bei uns möglich.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="heroRight" aria-hidden="true">
+            <div class="heroBg"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VORTEILE -->
+      <section class="section" id="leistungen">
+        <div class="sectionTitle">
+          <h2>Ihre Vorteile bei uns</h2>
+          <p>Präzision & Servicequalität für anspruchsvolle Fahrzeughalter.</p>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="cardIcon">★</div>
+            <h3>Kostenlose Beratung</h3>
+            <p>Wir sagen dir direkt, ob Reparatur reicht oder Austausch besser ist.</p>
+          </div>
+
+          <div class="card">
+            <div class="cardIcon">⚙</div>
+            <h3>Schneller Service</h3>
+            <p>Kurze Wege, schnelle Terminvergabe, saubere Ausführung.</p>
+          </div>
+
+          <div class="card">
+            <div class="cardIcon">⛑</div>
+            <h3>Original-/Markenteile</h3>
+            <p>Passgenaue Scheiben & Materialien für Sicherheit und Werterhalt.</p>
+          </div>
+
+          <div class="card">
+            <div class="cardIcon">📄</div>
+            <h3>Hilfe bei Versicherung</h3>
+            <p>Wenn nötig unterstützen wir dich bei den wichtigsten Infos/Schritten.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- KONTAKT -->
+      <section class="section" id="kontakt">
+        <div class="ctaBlock">
+          <div class="ctaLeft">
+            <h3>Sorgenfreier Service bei Glasschäden</h3>
+            <p>
+              Schick uns kurz deine Fahrzeugdaten und was passiert ist – wir melden uns schnell
+              zurück.
+            </p>
+            <ul class="checklist">
+              <li><span class="check">✓</span> Schnelle Rückmeldung & transparente Preise</li>
+              <li><span class="check">✓</span> Beratung: Reparatur vs. Austausch</li>
+              <li><span class="check">✓</span> Saubere Montage & Dichtheitscheck</li>
+            </ul>
+          </div>
+
+          <div class="formCard">
+            <h4>Jetzt Termin anfragen</h4>
+            <form onsubmit="return false;">
+              <div class="grid2">
+                <input type="text" placeholder="Name" />
+                <input type="tel" placeholder="Telefon" />
+              </div>
+              <div style="margin-top: 10px;">
+                <input type="text" placeholder="Fahrzeug (z.B. BMW 3er, Baujahr)" />
+              </div>
+              <div style="margin-top: 10px;">
+                <textarea placeholder="Was ist passiert? (Scheibe / Wunsch-Termin)"></textarea>
+              </div>
+
+              <div class="formActions">
+                <a class="btn primary" href={phoneTel}>📞 Rückruf anfordern</a>
+                <a class="btn" href={waBookLink} target="_blank" rel="noopener">💬 Per WhatsApp senden</a>
+              </div>
+
+              <div class="smallNote">
+                Tipp: Für WhatsApp einfach klicken – Text ist schon vorbereitet.
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- STANDORT -->
+      <section class="section" id="standort">
+        <div class="sectionTitle">
+          <h2>Standort</h2>
+          <p>{addressLine1}, {addressLine2}</p>
+        </div>
+
+        <div class="cards" style="grid-template-columns: 1fr;">
+          <div class="card" style="min-height:auto;">
+            <h3 style="margin: 0 0 6px;">{brand} • Ingolstadt</h3>
+            <div class="addrLine">{addressLine1}</div>
+            <div class="addrLine">{addressLine2}</div>
+
+            <div style="margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn dark" href={mapsLink} target="_blank" rel="noopener">📍 In Google Maps öffnen</a>
+              <a class="btn" href={phoneTel}>📞 Anrufen</a>
+              <a class="btn" href={waLink} target="_blank" rel="noopener">💬 WhatsApp</a>
+            </div>
+
+            <div class="mapWrap">
+              <iframe
+                class="mapFrame"
+                src={mapsEmbed}
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Google Maps – MR Autoglas Standort"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer>
+        <div>© {year} {brand} • Autoscheiben Ingolstadt</div>
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <a href="#home">Home</a>
+          <a href="#leistungen">Leistungen</a>
+          <a href="#standort">Standort</a>
+          <a href="#kontakt">Kontakt</a>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Floating Buttons -->
+    <div class="floatWrap" aria-label="Schnellaktionen">
+      <a class="floatBtn floatWa" href={waLink} target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="floatBtn floatCall" href={phoneTel}>📞 {phoneDisplay}</a>
+    </div>
+
+    <script>
+      document.body.style.opacity = "1";
+    </script>
+  </body>
+</html>

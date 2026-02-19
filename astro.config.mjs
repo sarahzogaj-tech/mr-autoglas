@@ -2,7 +2,4 @@
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
-export default defineConfig({
-  site: "https://sarahzogaj-tech.github.io",
-  base: "/mr-autoglas",
-});
+export default defineConfig({});
